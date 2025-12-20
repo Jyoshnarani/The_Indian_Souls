@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:the_indian_souls/screens/components/list_tile/divider_list_tile.dart';
+import 'package:the_indian_souls/utils/constants/constants.dart';
 
 class ProfileMenuListTile extends StatelessWidget {
   const ProfileMenuListTile({
@@ -24,7 +25,7 @@ class ProfileMenuListTile extends StatelessWidget {
         height: 24,
         width: 24,
         colorFilter: ColorFilter.mode(
-          Theme.of(context).iconTheme.color!,
+          primaryColor,
           BlendMode.srcIn,
         ),
       ),

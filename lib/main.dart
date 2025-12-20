@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:the_indian_souls/screens/network/dio_call/api_constants.dart';
 import 'package:the_indian_souls/utils/constants/constants.dart';
 import 'package:the_indian_souls/utils/route/route_constants.dart';
 import 'package:the_indian_souls/utils/route/router.dart';
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
           darkTheme: AppTheme.darkTheme,
           themeMode: mode,
           onGenerateRoute: generateRoute,
-          initialRoute: onboardingScreenRoute,
+          initialRoute: ApiDeclaration.token.isNotEmpty? dashboardScreenRoute: onboardingScreenRoute,
         );
       },
     );

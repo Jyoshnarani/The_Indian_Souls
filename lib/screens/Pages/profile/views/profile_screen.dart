@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:quickalert/quickalert.dart';
+import 'package:the_indian_souls/screens/Pages/profile/views/view_user_profile.dart';
+import 'package:the_indian_souls/screens/network/dio_call/api_constants.dart';
+import 'package:the_indian_souls/screens/network/dio_call/logout_api_call.dart';
 import 'package:the_indian_souls/screens/network/dio_call/user_details_api_call.dart';
 import 'package:the_indian_souls/screens/network/models/user_model.dart';
 import 'package:the_indian_souls/utils/constants/constants.dart';
@@ -19,39 +22,45 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class ProfileScreenState extends State<ProfileScreen> {
-  late UserData userDetails;
+  UserData? userData;
 
 
   @override
   void initState() {
     super.initState();
-    UserDetailsAPI()
-        .getUserDetails()
-        .then(
-          (value) => {
-            if (value.success)
-              {
-                setState(() {
-                  userDetails = value.data!;
-                }),
-              }
-            else
-              {
-                QuickAlert.show(
-                  context: context,
-                  type: QuickAlertType.error,
-                  text: "",
-                ),
-              },
-          },
-        )
-        .catchError((error) {
+    WidgetsBinding.instance.addPostFrameCallback((_) => fetchUserDetails());
+  }
+
+  Future<void> fetchUserDetails() async {
+    context.loaderOverlay.show();
+    try {
+      final response = await UserDetailsAPI().getUserDetails();
+      if (mounted) {
+        if (response.success) {
+          setState(() {
+            userData = response.data;
+          });
+        } else {
           QuickAlert.show(
             context: context,
             type: QuickAlertType.error,
-            text: error,
+            text: 'Failed to fetch user details',
           );
-        });
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.error,
+          text: e.toString(),
+        );
+      }
+    } finally {
+      if (mounted) {
+        context.loaderOverlay.hide();
+      }
+    }
   }
 
   @override
@@ -63,10 +72,21 @@ class ProfileScreenState extends State<ProfileScreen> {
         child: ListView(
           children: [
             ProfileCard(
-              name: "",
-              email: userDetails.emailAddress,
+              name: userData == null ? "": userData!.firstName,
+              email: userData == null ? "": userData!.emailAddress,
               imageSrc: userImage,
-              press: () {},
+              press:  userData == null ? null:() {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return ViewUserProfileScreen(
+                        userData: userData,
+                      );
+                    },
+                  ),
+                );
+              },
             ),
             // Padding(
             //   padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
@@ -122,7 +142,44 @@ class ProfileScreenState extends State<ProfileScreen> {
             // ),
             const SizedBox(height: defaultPadding),
             ListTile(
-              onTap: () {},
+              onTap: () {
+                QuickAlert.show(
+                  context: context,
+                  type: QuickAlertType.confirm,
+                  text: 'Do you want to logout',
+                  confirmBtnText: 'Yes',
+                  cancelBtnText: 'No',
+                  confirmBtnColor: primaryColor,
+                  onConfirmBtnTap: () {
+                    Navigator.of(context).pop();
+                    context.loaderOverlay.show();
+                    LogOutAPI().doLogOut().then((value) {
+                      context.loaderOverlay.hide();
+                      if (value.success) {
+                        ApiDeclaration.token = "";
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          logInScreenRoute,
+                              (route) => false,
+                        );
+                      } else {
+                        QuickAlert.show(
+                          context: context,
+                          type: QuickAlertType.error,
+                          text: 'Logout failed. Please try again.',
+                        );
+                      }
+                    }).catchError((error) {
+                      context.loaderOverlay.hide();
+                      QuickAlert.show(
+                        context: context,
+                        type: QuickAlertType.error,
+                        text: error.toString(),
+                      );
+                    });
+                  },
+                );
+              },
               minLeadingWidth: 24,
               leading: SvgPicture.asset(
                 iconLogout,

@@ -30,10 +30,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   static TextEditingController addressLine1Controller = TextEditingController();
   static TextEditingController addressLine2Controller = TextEditingController();
-  static TextEditingController cityController = TextEditingController();
-  static TextEditingController stateController = TextEditingController();
-  static TextEditingController countryController = TextEditingController();
-  static TextEditingController pinCodeController = TextEditingController();
+
+  // static TextEditingController pinCodeController = TextEditingController();
+
+  final List<String> _countries = ['India', 'USA'];
+  final Map<String, List<String>> _states = {
+    'India': ['Delhi', 'Maharashtra', 'Karnataka'],
+    'USA': ['California', 'Texas', 'Florida'],
+  };
+  final Map<String, List<String>> _cities = {
+    'Karnataka': ['Bangalore', 'Mysore'],
+    'Maharashtra': ['Mumbai', 'Pune'],
+    'Delhi': ['New Delhi'],
+    'California': ['Los Angeles', 'San Francisco'],
+    'Texas': ['Houston', 'Austin'],
+    'Florida': ['Miami', 'Orlando'],
+  };
+
+  String? _selectedCountry;
+  String? _selectedState;
+  String? _selectedCity;
+
+  List<String> _statesForCountry = [];
+  List<String> _citiesForState = [];
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +97,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             textInputAction: TextInputAction.next,
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
-                              hintText: "First Name",
+                              hintText: "First Name *",
                               prefixIcon: Padding(
                                 padding: const EdgeInsets.symmetric(
                                   vertical: defaultPadding * 0.75,
@@ -135,7 +154,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             textInputAction: TextInputAction.next,
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
-                              hintText: "Last Name",
+                              hintText: "Last Name *"
+                                  "",
                               prefixIcon: Padding(
                                 padding: const EdgeInsets.symmetric(
                                   vertical: defaultPadding * 0.75,
@@ -158,19 +178,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                           const SizedBox(height: defaultPadding),
                           TextFormField(
-                            onSaved: (value) {},
                             readOnly: true,
-                            validator: emailIdValidator.call,
-                            textInputAction: TextInputAction.next,
-                            keyboardType: TextInputType.emailAddress,
+                            controller: null,
                             decoration: InputDecoration(
-                              hintText: "Gender",
+                              hintText: "Gender *",
                               prefixIcon: Padding(
                                 padding: const EdgeInsets.symmetric(
                                   vertical: defaultPadding * 0.75,
                                 ),
                                 child: SvgPicture.asset(
-                                  iconProfile,
+                                  iconGender,
                                   height: 24,
                                   width: 24,
                                   colorFilter: ColorFilter.mode(
@@ -215,7 +232,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             textInputAction: TextInputAction.next,
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
-                              hintText: "Email address",
+                              hintText: "Email address *",
 
                               prefixIcon: Padding(
                                 padding: const EdgeInsets.symmetric(
@@ -245,13 +262,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             textInputAction: TextInputAction.next,
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
-                              hintText: "Phone Number",
+                              hintText: "Phone Number *",
                               prefixIcon: Padding(
                                 padding: const EdgeInsets.symmetric(
                                   vertical: defaultPadding * 0.75,
                                 ),
                                 child: SvgPicture.asset(
-                                  iconMessage,
+                                  iconPhone,
                                   height: 24,
                                   width: 24,
                                   colorFilter: ColorFilter.mode(
@@ -274,7 +291,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             textInputAction: TextInputAction.next,
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
-                              hintText: "Address Line 1",
+                              hintText: "Address Line 1 *",
                               prefixIcon: Padding(
                                 padding: const EdgeInsets.symmetric(
                                   vertical: defaultPadding * 0.75,
@@ -302,7 +319,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             textInputAction: TextInputAction.next,
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
-                              hintText: "Address Line 2",
+                              hintText: "Address Line 2 *",
                               prefixIcon: Padding(
                                 padding: const EdgeInsets.symmetric(
                                   vertical: defaultPadding * 0.75,
@@ -324,14 +341,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                           ),
                           const SizedBox(height: defaultPadding),
-                          TextFormField(
-                            onSaved: (value) {},
-                            controller: cityController,
-                            validator: fieldValidator.call,
-                            textInputAction: TextInputAction.next,
-                            keyboardType: TextInputType.emailAddress,
+                          DropdownButtonFormField<String>(
+                            initialValue: _selectedCountry,
+                            hint: const Text("Country *",style: TextStyle(fontWeight: FontWeight.w400)),
+                            isExpanded: true,
                             decoration: InputDecoration(
-                              hintText: "City",
                               prefixIcon: Padding(
                                 padding: const EdgeInsets.symmetric(
                                   vertical: defaultPadding * 0.75,
@@ -351,16 +365,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ),
                               ),
                             ),
+                            items: _countries.map((String country) {
+                              return DropdownMenuItem<String>(
+                                value: country,
+                                child: Text(country, style: TextStyle(fontWeight: FontWeight.w400),),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                _selectedCountry = newValue;
+                                _selectedState = null;
+                                _selectedCity = null;
+                                _statesForCountry = _states[newValue!] ?? [];
+                                _citiesForState = [];
+                              });
+                            },
+                            validator: (value) =>
+                            value == null ? 'Please select a country' : null,
                           ),
                           const SizedBox(height: defaultPadding),
-                          TextFormField(
-                            onSaved: (value) {},
-                            controller: stateController,
-                            validator: fieldValidator.call,
-                            textInputAction: TextInputAction.next,
-                            keyboardType: TextInputType.emailAddress,
+                          DropdownButtonFormField<String>(
+                            initialValue: _selectedState,
+                            hint: const Text("State *",style: TextStyle(fontWeight: FontWeight.w400)),
+                            isExpanded: true,
                             decoration: InputDecoration(
-                              hintText: "State",
                               prefixIcon: Padding(
                                 padding: const EdgeInsets.symmetric(
                                   vertical: defaultPadding * 0.75,
@@ -380,16 +408,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ),
                               ),
                             ),
+                            items: _statesForCountry.map((String state) {
+                              return DropdownMenuItem<String>(
+                                value: state,
+                                child: Text(state,style: TextStyle(fontWeight: FontWeight.w400)),
+                              );
+                            }).toList(),
+                            onChanged: _selectedCountry == null
+                                ? null
+                                : (String? newValue) {
+                              setState(() {
+                                _selectedState = newValue;
+                                _selectedCity = null;
+                                _citiesForState = _cities[newValue!] ?? [];
+                              });
+                            },
+                            validator: (value) =>
+                            value == null ? 'Please select a state' : null,
                           ),
                           const SizedBox(height: defaultPadding),
-                          TextFormField(
-                            onSaved: (value) {},
-                            controller: countryController,
-                            validator: fieldValidator.call,
-                            textInputAction: TextInputAction.next,
-                            keyboardType: TextInputType.emailAddress,
+                          DropdownButtonFormField<String>(
+                            initialValue: _selectedCity,
+                            hint: const Text("City *",style: TextStyle(fontWeight: FontWeight.w400)),
+                            isExpanded: true,
                             decoration: InputDecoration(
-                              hintText: "Cuntry",
                               prefixIcon: Padding(
                                 padding: const EdgeInsets.symmetric(
                                   vertical: defaultPadding * 0.75,
@@ -409,39 +451,55 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ),
                               ),
                             ),
+                            items: _citiesForState.map((String city) {
+                              return DropdownMenuItem<String>(
+                                value: city,
+                                child: Text(city,style: TextStyle(fontWeight: FontWeight.w400)),
+                              );
+                            }).toList(),
+                            onChanged: _selectedState == null
+                                ? null
+                                : (String? newValue) {
+                              setState(() {
+                                _selectedCity = newValue;
+                              });
+                            },
+                            validator: (value) =>
+                            value == null ? 'Please select a city' : null,
                           ),
-                          const SizedBox(height: defaultPadding),
-                          TextFormField(
-                            onSaved: (value) {},
-                            controller: pinCodeController,
-                            validator: fieldValidator.call,
-                            textInputAction: TextInputAction.next,
-                            keyboardType: TextInputType.emailAddress,
-                            inputFormatters: [
-                              LengthLimitingTextInputFormatter(6),
-                            ],
-                            decoration: InputDecoration(
-                              hintText: "Pin code",
-                              prefixIcon: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: defaultPadding * 0.75,
-                                ),
-                                child: SvgPicture.asset(
-                                  iconAddress,
-                                  height: 24,
-                                  width: 24,
-                                  colorFilter: ColorFilter.mode(
-                                    Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge!
-                                        .color!
-                                        .withValues(alpha: 0.3),
-                                    BlendMode.srcIn,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+
+                          // const SizedBox(height: defaultPadding),
+                          // TextFormField(
+                          //   onSaved: (value) {},
+                          //   controller: pinCodeController,
+                          //   validator: fieldValidator.call,
+                          //   textInputAction: TextInputAction.next,
+                          //   keyboardType: TextInputType.emailAddress,
+                          //   inputFormatters: [
+                          //     LengthLimitingTextInputFormatter(6),
+                          //   ],
+                          //   decoration: InputDecoration(
+                          //     hintText: "Pin code",
+                          //     prefixIcon: Padding(
+                          //       padding: const EdgeInsets.symmetric(
+                          //         vertical: defaultPadding * 0.75,
+                          //       ),
+                          //       child: SvgPicture.asset(
+                          //         iconAddress,
+                          //         height: 24,
+                          //         width: 24,
+                          //         colorFilter: ColorFilter.mode(
+                          //           Theme.of(context)
+                          //               .textTheme
+                          //               .bodyLarge!
+                          //               .color!
+                          //               .withValues(alpha: 0.3),
+                          //           BlendMode.srcIn,
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                           const SizedBox(height: defaultPadding),
                           TextFormField(
                             onSaved: (value) {},
@@ -450,13 +508,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             textInputAction: TextInputAction.next,
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
-                              hintText: "New Password",
+                              hintText: "New Password *",
                               prefixIcon: Padding(
                                 padding: const EdgeInsets.symmetric(
                                   vertical: defaultPadding * 0.75,
                                 ),
                                 child: SvgPicture.asset(
-                                  iconMessage,
+                                  iconLock,
                                   height: 24,
                                   width: 24,
                                   colorFilter: ColorFilter.mode(
@@ -478,7 +536,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             validator: confirmPasswordValidator.call,
                             obscureText: true,
                             decoration: InputDecoration(
-                              hintText: "Confirm Password",
+                              hintText: "Confirm Password *",
                               prefixIcon: Padding(
                                 padding: const EdgeInsets.symmetric(
                                   vertical: defaultPadding * 0.75,
@@ -502,43 +560,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: defaultPadding),
-                    Row(
-                      children: [
-                        Checkbox(onChanged: (value) {
-
-                        }, value: false),
-                        Expanded(
-                          child: Text.rich(
-                            TextSpan(
-                              text: "I agree with the",
-                              children: [
-                                TextSpan(
-                                  recognizer: TapGestureRecognizer(),
-                                  text: " Terms of service ",
-                                  style: const TextStyle(
-                                    color: primaryColor,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                const TextSpan(text: "& privacy policy."),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
                     const SizedBox(height: defaultPadding * 2),
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, dashboardScreenRoute);
+                     //   Navigator.pushNamed(context, dashboardScreenRoute);
                       },
                       child: const Text("Continue"),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text("Do you have an account?"),
+                        const Text("Already have an account?"),
                         TextButton(
                           onPressed: () {
                             Navigator.pushNamed(context, logInScreenRoute);
