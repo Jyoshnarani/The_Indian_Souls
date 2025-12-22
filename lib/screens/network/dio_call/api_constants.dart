@@ -1,11 +1,8 @@
 
 class ApiDeclaration {
-
-
-
   static const baseUrl = "https://indian-souls-backend-d5g7geakhbazgzhj.southeastasia-01.azurewebsites.net";
   // static String token = "";
-  static String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcl9pZCI6NywiaWF0IjoxNzY2MTU4NjgyLCJleHAiOjE3NjYyNDUwODJ9.UPoihA0fNomuSrjIQN17BrcFUKywI4816W7rqPHdxdE";
+  static String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcl9pZCI6MTIsImlhdCI6MTc2NjQxNTIzMiwiZXhwIjoxNzY2NTAxNjMyfQ._KIQ8YVnwE6kg00BHEEPm8Ejxs2eHjnJYJZrEiQzbyc";
 
 
   static Map<String, dynamic> headersConfiguration(bool isAuthorize) {

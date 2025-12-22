@@ -8,7 +8,7 @@ import 'package:the_indian_souls/screens/network/models/login_model.dart';
 class LogInAPI {
   DioClientCall dioClientCall = DioClientCall();
 
-  Future<LoginModel> doLogIn(String emailId, String password) async {
+  Future<LoginModel> doLogIn(String emailId, String password, int captchaId, String captchaText) async {
     try {
       LoginModel loginModel = LoginModel(
         success: false,
@@ -18,33 +18,14 @@ class LogInAPI {
       final data = json.encode({
         "email_address": emailId,
         "login_password": password,
+        "captcha_id" : captchaId,
+        "captcha_text" : captchaText
       });
       debugPrint("api : ${ApiDeclaration.loginUrl},\n data : $data ");
       await dioClientCall
           .post(ApiDeclaration.loginUrl, data: data)
           .then((value) {
-        loginModel = LoginModel.fromJson(value);
-            // if (value.status == 200) {
-            //   loginModel = LoginModel.fromJson(value.data);
-            // } if (value.status == 400) {
-            //   loginModel = LoginModel(
-            //     success: false,
-            //     message: value.message!.toString(),
-            //     data: Data(token: ""),
-            //   );
-            // }if (value.status >= 400 && value.status < 500) {
-            //   loginModel = LoginModel(
-            //     success: false,
-            //     message: value.message!.toString(),
-            //     data: Data(token: ""),
-            //   );
-            // }else {
-            //   loginModel = LoginModel(
-            //     success: false,
-            //     message: value.message!.toString(),
-            //     data: Data(token: ""),
-            //   );
-            // }
+            loginModel = LoginModel.fromJson(value);
           })
           .catchError((error) {
             loginModel = LoginModel(

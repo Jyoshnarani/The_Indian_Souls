@@ -3,6 +3,7 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:the_indian_souls/screens/Pages/product/views/product_details_screen.dart';
 import 'package:the_indian_souls/screens/components/product/product_card.dart';
+import 'package:the_indian_souls/screens/network/dio_call/api_constants.dart';
 import 'package:the_indian_souls/screens/network/dio_call/product_api_call.dart';
 import 'package:the_indian_souls/screens/network/models/product_model.dart';
 import 'package:the_indian_souls/utils/constants/constants.dart';
@@ -21,7 +22,7 @@ class PopularProductsState extends State<PopularProducts> {
   void initState() {
     super.initState();
     ProductListAPI()
-        .getProductDetails()
+        .getAllProductList()
         .then(
           (value) => {
             if (value.success!)
@@ -85,7 +86,7 @@ class PopularProductsState extends State<PopularProducts> {
                       MaterialPageRoute(
                         builder: (context) {
                           return ProductDetailsScreen(
-                            productData: productList[index],
+                            index: productList[index].productId,
                           );
                         },
                       ),

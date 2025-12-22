@@ -3,7 +3,7 @@ const String logInScreenRoute = "login";
 const String signUpScreenRoute = "signup";
 
 
-const String dashboardScreenRoute = "dashboard";
+  const String dashboardScreenRoute = "dashboard";
 const String homeScreenRoute = "home";
 const String profileScreenRoute = "profile";
 const String displayBrightness = "displayBrightness";

@@ -72,7 +72,7 @@ class ProfileScreenState extends State<ProfileScreen> {
         child: ListView(
           children: [
             ProfileCard(
-              name: userData == null ? "": userData!.firstName,
+              name: userData == null ? "": userData!.firstName ??"",
               email: userData == null ? "": userData!.emailAddress,
               imageSrc: userImage,
               press:  userData == null ? null:() {

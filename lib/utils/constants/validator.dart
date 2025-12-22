@@ -22,7 +22,7 @@ String? confirmPasswordValidator(String? value) {
       .validateMatch(value, passwordController.text);
 }
 
-enum Gender { male, female, others }
+enum Gender { male, female, other }
 
 final emailIdValidator = MultiValidator([
   RequiredValidator(errorText: 'Email is required'),

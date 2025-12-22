@@ -8,9 +8,10 @@ class ProductInfo extends StatelessWidget {
     required this.price,
     required this.color,
     required this.size,
+    required this.desc,
   });
 
-  final String title, price, color, size;
+  final String title, price, color, size,desc;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +42,13 @@ class ProductInfo extends StatelessWidget {
                   ).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
                 ),
               ],
+            ),
+            const SizedBox(height: defaultPadding / 2),
+            SizedBox(height: 10,),
+            Text(
+              "Description: $desc",
+                maxLines: 2,
+                style: Theme.of(context).textTheme.bodySmall,
             ),
             const SizedBox(height: defaultPadding / 2),
             SizedBox(height: 10,),

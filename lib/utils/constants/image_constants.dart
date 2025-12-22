@@ -1,3 +1,7 @@
+import 'dart:ui' as ui;
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'dart:io';
 
 const productImg1 = "https://i.pinimg.com/736x/97/4b/6b/974b6b655cf044df75db6b2d4e2dde8a.jpg";
 const productImg2 = "https://i.pinimg.com/1200x/a4/2f/f4/a42ff4b691cf638ac8ca6216928042b1.jpg";
@@ -9,3 +13,22 @@ const productImage2 = "https://i.pinimg.com/736x/0d/a6/93/0da69389d1640aa21238e4
 const appLogo = "assets/images/app_logo.png";
 const introImage = "assets/images/intro_image.png";
 //https://images.pexels.com/photos/5498382/pexels-photo-5498382.jpeg
+
+Future<Uint8List> saveSvgAsPng(String svgString) async {
+  final cleanedSvg = svgString
+      .replaceAll(RegExp(r'width="100%"'), '')
+      .replaceAll(RegExp(r'height="100%"'), '');
+
+  final PictureInfo pictureInfo = await vg.loadPicture(
+      SvgStringLoader(cleanedSvg),
+      null
+  );
+
+  final ui.Image image = await pictureInfo.picture.toImage(200, 200);
+
+  final ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+  final Uint8List pngBytes = byteData!.buffer.asUint8List();
+
+  pictureInfo.picture.dispose();
+  return pngBytes;
+}

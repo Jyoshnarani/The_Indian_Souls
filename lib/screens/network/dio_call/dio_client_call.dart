@@ -6,12 +6,12 @@ class DioClientCall {
 
   // Get:-----------------------------------------------------------------------
   Future<dynamic> get(
-      String uri, {
-        Map<String, dynamic>? queryParameters,
-        Options? options,
-        CancelToken? cancelToken,
-        ProgressCallback? onReceiveProgress,
-      }) async {
+    String uri, {
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onReceiveProgress,
+  }) async {
     try {
       final Response response = await dio.get(
         uri,
@@ -20,7 +20,21 @@ class DioClientCall {
         cancelToken: cancelToken,
         onReceiveProgress: onReceiveProgress,
       );
-      return response.data;
+      if (response.statusCode != null) {
+        if (response.statusCode == 200) {
+          return response.data;
+        }
+        if (response.statusCode == 400) {
+          return response.statusMessage;
+        }
+        if (response.statusCode! >= 400 && response.statusCode! < 500) {
+          return response.statusMessage;
+        } else {
+          return response.statusMessage;
+        }
+      } else {
+        return response.statusMessage;
+      }
     } catch (e) {
       debugPrint(e.toString());
       rethrow;
@@ -29,14 +43,14 @@ class DioClientCall {
 
   // Post:----------------------------------------------------------------------
   Future<dynamic> post(
-      String uri, {
-        data,
-        Map<String, dynamic>? queryParameters,
-        Options? options,
-        CancelToken? cancelToken,
-        ProgressCallback? onSendProgress,
-        ProgressCallback? onReceiveProgress,
-      }) async {
+    String uri, {
+    data,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
     try {
       final Response response = await dio.post(
         uri,
@@ -47,19 +61,33 @@ class DioClientCall {
         onSendProgress: onSendProgress,
         onReceiveProgress: onReceiveProgress,
       );
-      return response.data;
+      if (response.statusCode != null) {
+        if (response.statusCode == 200) {
+          return response.data;
+        }
+        if (response.statusCode == 400) {
+          return response.statusMessage;
+        }
+        if (response.statusCode! >= 400 && response.statusCode! < 500) {
+          return response.statusMessage;
+        } else {
+          return response.statusMessage;
+        }
+      } else {
+        return response.statusMessage;
+      }
     } catch (e) {
       rethrow;
     }
   }
 
   Future<dynamic> postLogout(
-      String uri, {
-        Map<String, dynamic>? queryParameters,
-        Options? options,
-        CancelToken? cancelToken,
-        ProgressCallback? onReceiveProgress,
-      }) async {
+    String uri, {
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onReceiveProgress,
+  }) async {
     try {
       final Response response = await dio.post(
         uri,
@@ -77,14 +105,14 @@ class DioClientCall {
 
   // Put:-----------------------------------------------------------------------
   Future<dynamic> put(
-      String uri, {
-        data,
-        Map<String, dynamic>? queryParameters,
-        Options? options,
-        CancelToken? cancelToken,
-        ProgressCallback? onSendProgress,
-        ProgressCallback? onReceiveProgress,
-      }) async {
+    String uri, {
+    data,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
     try {
       final Response response = await dio.put(
         uri,
@@ -95,7 +123,21 @@ class DioClientCall {
         onSendProgress: onSendProgress,
         onReceiveProgress: onReceiveProgress,
       );
-      return response.data;
+      if (response.statusCode != null) {
+        if (response.statusCode == 200) {
+          return response.data;
+        }
+        if (response.statusCode == 400) {
+          return response.statusMessage;
+        }
+        if (response.statusCode! >= 400 && response.statusCode! < 500) {
+          return response.statusMessage;
+        } else {
+          return response.statusMessage;
+        }
+      } else {
+        return response.statusMessage;
+      }
     } catch (e) {
       rethrow;
     }
@@ -103,14 +145,14 @@ class DioClientCall {
 
   // Delete:--------------------------------------------------------------------
   Future<dynamic> delete(
-      String uri, {
-        data,
-        Map<String, dynamic>? queryParameters,
-        Options? options,
-        CancelToken? cancelToken,
-        ProgressCallback? onSendProgress,
-        ProgressCallback? onReceiveProgress,
-      }) async {
+    String uri, {
+    data,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
     try {
       final Response response = await dio.delete(
         uri,
@@ -119,7 +161,21 @@ class DioClientCall {
         options: options,
         cancelToken: cancelToken,
       );
-      return response.data;
+      if (response.statusCode != null) {
+        if (response.statusCode == 200) {
+          return response.data;
+        }
+        if (response.statusCode == 400) {
+          return response.statusMessage;
+        }
+        if (response.statusCode! >= 400 && response.statusCode! < 500) {
+          return response.statusMessage;
+        } else {
+          return response.statusMessage;
+        }
+      } else {
+        return response.statusMessage;
+      }
     } catch (e) {
       rethrow;
     }
