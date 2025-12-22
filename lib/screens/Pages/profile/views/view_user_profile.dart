@@ -51,12 +51,7 @@ class ViewUserProfileScreenState extends State<ViewUserProfileScreen> {
               iconUserEdit,
               height: 24,
               width: 24,
-              colorFilter: ColorFilter.mode(
-                Theme.of(
-                  context,
-                ).textTheme.bodyLarge!.color!.withValues(alpha: 0.3),
-                BlendMode.srcIn,
-              ),
+
             ),
           ),
         ],
@@ -77,9 +72,9 @@ class ViewUserProfileScreenState extends State<ViewUserProfileScreen> {
               const SizedBox(height: defaultPadding),
               _buildProfileDetail(
                 'Name',
-                '${userData.firstName ?? ''} ${userData.middleInitial ?? ''} ${userData.lastName ?? ''}',
+                '${userData.firstName ?? 'N/A'} ${userData.middleInitial ?? ''} ${userData.lastName ?? ''}',
               ),
-              _buildProfileDetail('Gender', userData.gender),
+              _buildProfileDetail('Gender', userData.gender??'N/A'),
               _buildProfileDetail('Email Address', userData.emailAddress),
               _buildProfileDetail(
                 'Phone Number',
