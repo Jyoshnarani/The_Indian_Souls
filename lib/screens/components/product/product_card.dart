@@ -22,6 +22,7 @@ class ProductCard extends StatelessWidget {
         minimumSize: const Size(140, 220),
         maximumSize: const Size(140, 220),
         padding: const EdgeInsets.all(8),
+        side: const BorderSide(color: primaryColor, width: 1),
       ),
       child: Column(
         children: [
@@ -32,6 +33,7 @@ class ProductCard extends StatelessWidget {
                 NetworkImageWithLoader(
                   image!,
                   radius: defaultBorderRadius,
+                  fit: BoxFit.fill,
                 ),
               ],
             ),

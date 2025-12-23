@@ -37,6 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> fetchCaptcha() async {
+
     context.loaderOverlay.show();
     try {
       final response = await GetCaptchaApi().getCaptcha();
@@ -308,7 +309,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Navigator.pushNamedAndRemoveUntil(
           context,
           dashboardScreenRoute,
-          ModalRoute.withName(dashboardScreenRoute),
+          ModalRoute.withName(logInScreenRoute),
         );
       } else {
         QuickAlert.show(
@@ -318,7 +319,7 @@ class _LoginScreenState extends State<LoginScreen> {
           onConfirmBtnTap: () {
             Navigator.pushNamedAndRemoveUntil(
               context,
-              dashboardScreenRoute,
+              logInScreenRoute,
               ModalRoute.withName(logInScreenRoute),
             );
           },

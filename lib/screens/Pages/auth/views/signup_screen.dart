@@ -695,8 +695,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         onConfirmBtnTap: () {
           Navigator.pushNamedAndRemoveUntil(
             context,
-            dashboardScreenRoute,
-            ModalRoute.withName(logInScreenRoute),
+            logInScreenRoute,
+            ModalRoute.withName(signUpScreenRoute),
           );
         },
       );

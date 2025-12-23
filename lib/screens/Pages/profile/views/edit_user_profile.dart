@@ -45,14 +45,30 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
   @override
   void initState() {
     super.initState();
-    _firstNameController = TextEditingController(text: widget.userData?.firstName ?? '');
-    _middleInitialController = TextEditingController(text: widget.userData?.middleInitial ?? '');
-    _lastNameController = TextEditingController(text: widget.userData?.lastName ?? '');
-    _genderController = TextEditingController(text: widget.userData?.gender ?? '');
-    _emailController = TextEditingController(text: widget.userData?.emailAddress ?? '');
-    _phoneNumberController = TextEditingController(text: widget.userData?.phoneNumber ?? '');
-    _addressLine1Controller = TextEditingController(text: widget.userData?.addressLine1 ?? '');
-    _addressLine2Controller = TextEditingController(text: widget.userData?.addressLine2 ?? '');
+    _firstNameController = TextEditingController(
+      text: widget.userData?.firstName ?? '',
+    );
+    _middleInitialController = TextEditingController(
+      text: widget.userData?.middleInitial ?? '',
+    );
+    _lastNameController = TextEditingController(
+      text: widget.userData?.lastName ?? '',
+    );
+    _genderController = TextEditingController(
+      text: widget.userData?.gender ?? '',
+    );
+    _emailController = TextEditingController(
+      text: widget.userData?.emailAddress ?? '',
+    );
+    _phoneNumberController = TextEditingController(
+      text: widget.userData?.phoneNumber ?? '',
+    );
+    _addressLine1Controller = TextEditingController(
+      text: widget.userData?.addressLine1 ?? '',
+    );
+    _addressLine2Controller = TextEditingController(
+      text: widget.userData?.addressLine2 ?? '',
+    );
 
     _selectedCountry = widget.userData?.country;
     if (!_countries.contains(_selectedCountry)) {
@@ -62,7 +78,9 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
     final citiesForCountry = _cities[_selectedCountry] ?? [];
     _selectedCity = widget.userData?.townCity;
     if (!citiesForCountry.contains(_selectedCity)) {
-      _selectedCity = citiesForCountry.isNotEmpty ? citiesForCountry.first : null;
+      _selectedCity = citiesForCountry.isNotEmpty
+          ? citiesForCountry.first
+          : null;
     }
   }
 
@@ -82,29 +100,46 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Edit Profile'),
-      ),
+      appBar: AppBar(title: const Text('Edit Profile')),
       body: LoaderOverlay(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(defaultPadding),
           child: Form(
             key: _formKey,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 _buildTextFormField(_firstNameController, 'First Name', true),
-                _buildTextFormField(_middleInitialController, 'Middle Initial', false),
+                _buildTextFormField(
+                  _middleInitialController,
+                  'Middle Initial',
+                  false,
+                ),
                 _buildTextFormField(_lastNameController, 'Last Name', true),
                 _buildTextFormField(_genderController, 'Gender', true),
                 _buildTextFormField(_emailController, 'Email Address', true),
-                _buildTextFormField(_phoneNumberController, 'Phone Number', true),
-                _buildTextFormField(_addressLine1Controller, 'Address Line 1', false),
-                _buildTextFormField(_addressLine2Controller, 'Address Line 2', false),
+                _buildTextFormField(
+                  _phoneNumberController,
+                  'Phone Number',
+                  true,
+                ),
+                _buildTextFormField(
+                  _addressLine1Controller,
+                  'Address Line 1',
+                  false,
+                ),
+                _buildTextFormField(
+                  _addressLine2Controller,
+                  'Address Line 2',
+                  false,
+                ),
                 _buildCountryDropdown(),
                 _buildCityDropdown(),
                 const SizedBox(height: defaultPadding),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 48),
+                  ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
@@ -112,7 +147,7 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
                     }
                   },
                   child: const Text('Update'),
-                )
+                ),
               ],
             ),
           ),
@@ -121,7 +156,11 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
     );
   }
 
-  Widget _buildTextFormField(TextEditingController controller, String label, bool readOnly) {
+  Widget _buildTextFormField(
+    TextEditingController controller,
+    String label,
+    bool readOnly,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextFormField(
@@ -130,6 +169,9 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
         decoration: InputDecoration(
           labelText: label,
           border: const OutlineInputBorder(),
+          fillColor: Theme.of(
+            context,
+          ).colorScheme.onSurface.withValues(alpha: 0.05),
         ),
       ),
     );
@@ -140,14 +182,25 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: DropdownButtonFormField<String>(
         value: _selectedCountry,
-        decoration: const InputDecoration(
+        iconEnabledColor: Theme.of(
+          context,
+        ).colorScheme.onSurface.withValues(alpha: 0.05),
+        decoration: InputDecoration(
           labelText: 'Country',
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
+          fillColor: Theme.of(
+            context,
+          ).colorScheme.onSurface.withValues(alpha: 0.05),
+        ),
+        dropdownColor: Theme.of(context).cardColor,
+        icon: Icon(
+          Icons.arrow_drop_down,
+          color: Theme.of(context).colorScheme.onSurface,
         ),
         items: _countries.map((String country) {
           return DropdownMenuItem<String>(
             value: country,
-            child: Text(country),
+            child: Text(country, style: Theme.of(context).textTheme.bodyLarge),
           );
         }).toList(),
         onChanged: (newValue) {
@@ -161,19 +214,32 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
   }
 
   Widget _buildCityDropdown() {
-    List<String> citiesForSelectedCountry = _selectedCountry != null ? (_cities[_selectedCountry] ?? []) : [];
+    List<String> citiesForSelectedCountry = _selectedCountry != null
+        ? (_cities[_selectedCountry] ?? [])
+        : [];
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: DropdownButtonFormField<String>(
         value: _selectedCity,
-        decoration: const InputDecoration(
+        iconEnabledColor: Theme.of(
+          context,
+        ).colorScheme.onSurface.withValues(alpha: 0.05),
+        decoration: InputDecoration(
           labelText: 'City',
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
+          fillColor: Theme.of(
+            context,
+          ).colorScheme.onSurface.withValues(alpha: 0.05),
+        ),
+        dropdownColor: Theme.of(context).cardColor,
+        icon: Icon(
+          Icons.arrow_drop_down,
+          color: Theme.of(context).colorScheme.onSurface,
         ),
         items: citiesForSelectedCountry.map((String city) {
           return DropdownMenuItem<String>(
             value: city,
-            child: Text(city),
+            child: Text(city, style: Theme.of(context).textTheme.bodyLarge),
           );
         }).toList(),
         onChanged: (newValue) {
@@ -181,7 +247,12 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
             _selectedCity = newValue;
           });
         },
-        disabledHint: Text(_selectedCountry == null ? 'Select a country first' : 'No cities available'),
+        disabledHint: Text(
+          _selectedCountry == null
+              ? 'Select a country first'
+              : 'No cities available',
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
       ),
     );
   }
@@ -204,10 +275,15 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
         context: context,
         type: QuickAlertType.success,
         text: 'Profile updated successfully!',
+        backgroundColor: Theme.of(context).cardColor,
+        titleColor: Theme.of(context).colorScheme.onSurface,
+        textColor: Theme.of(context).colorScheme.onSurface,
         onConfirmBtnTap: () {
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => const Dashboard(initialIndex: 1)),
+            MaterialPageRoute(
+              builder: (context) => const Dashboard(initialIndex: 1),
+            ),
             (Route<dynamic> route) => false,
           );
         },
@@ -217,6 +293,9 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
         context: context,
         type: QuickAlertType.error,
         text: 'Failed to update profile.',
+        backgroundColor: Theme.of(context).cardColor,
+        titleColor: Theme.of(context).colorScheme.onSurface,
+        textColor: Theme.of(context).colorScheme.onSurface,
       );
     }
   }

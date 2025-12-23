@@ -27,28 +27,29 @@ class PopularProductsState extends State<PopularProducts> {
   }
 
   void _fetchProducts() {
-    ProductListAPI().getAllProductList().then(
-      (value) {
-        if (value.success) {
-          setState(() {
-            _productList = value.data!;
-            _filteredProducts = _productList;
-          });
-        } else {
+    ProductListAPI()
+        .getAllProductList()
+        .then((value) {
+          if (value.success) {
+            setState(() {
+              _productList = value.data!;
+              _filteredProducts = _productList;
+            });
+          } else {
+            QuickAlert.show(
+              context: context,
+              type: QuickAlertType.error,
+              text: "Failed to load products.",
+            );
+          }
+        })
+        .catchError((error) {
           QuickAlert.show(
             context: context,
             type: QuickAlertType.error,
-            text: "Failed to load products.",
+            text: error.toString(),
           );
-        }
-      },
-    ).catchError((error) {
-      QuickAlert.show(
-        context: context,
-        type: QuickAlertType.error,
-        text: error.toString(),
-      );
-    });
+        });
   }
 
   void _filterProducts() {
@@ -69,6 +70,8 @@ class PopularProductsState extends State<PopularProducts> {
   @override
   Widget build(BuildContext context) {
     return LoaderOverlay(
+      duration: Duration(seconds: 10),
+      overlayWidgetBuilder: (_) => Center(child: CircularProgressIndicator()),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -84,9 +87,17 @@ class PopularProductsState extends State<PopularProducts> {
             padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
             child: TextField(
               controller: _searchController,
+              style: Theme.of(context).textTheme.titleMedium,
               decoration: InputDecoration(
+                fillColor: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.05),
                 hintText: 'Search products...',
-                prefixIcon: const Icon(Icons.search),
+                hintStyle:Theme.of(context).textTheme.titleMedium,
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12.0),
                 ),
