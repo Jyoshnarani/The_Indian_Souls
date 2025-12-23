@@ -7,24 +7,24 @@ String loginModelToJson(LoginModel data) => json.encode(data.toJson());
 class LoginModel {
   bool success;
   String message;
-  Data data;
+  Data? data;
 
   LoginModel({
     required this.success,
     required this.message,
-    required this.data,
+    this.data,
   });
 
   factory LoginModel.fromJson(Map<String, dynamic> json) => LoginModel(
     success: json["success"],
     message: json["message"],
-    data: Data.fromJson(json["data"]),
+    data: json["data"] == null ? null: Data.fromJson(json["data"]),
   );
 
   Map<String, dynamic> toJson() => {
     "success": success,
     "message": message,
-    "data": data.toJson(),
+    "data": data!.toJson(),
   };
 }
 

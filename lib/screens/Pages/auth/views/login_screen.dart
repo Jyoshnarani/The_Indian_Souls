@@ -36,23 +36,23 @@ class _LoginScreenState extends State<LoginScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) => fetchCaptcha());
   }
 
-
   Future<void> fetchCaptcha() async {
     context.loaderOverlay.show();
     try {
       final response = await GetCaptchaApi().getCaptcha();
       if (mounted) {
-       if(response.captchaId != 0){
-         setState(() {
-           captchaId = response.captchaId!;
-           captchaBytes = response.captchaImage!;
-         });
-       }else{
-         QuickAlert.show(
-           context: context,
-           type: QuickAlertType.error,
-           text: response.massage);
-       }
+        if (response.captchaId != 0) {
+          setState(() {
+            captchaId = response.captchaId!;
+            captchaBytes = response.captchaImage!;
+          });
+        } else {
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.error,
+            text: response.massage,
+          );
+        }
       }
     } catch (e) {
       if (mounted) {
@@ -172,70 +172,78 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                             ),
-                             const SizedBox(height: defaultPadding),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: defaultPadding * 0.75,
-                          horizontal: defaultPadding * 0.75,
-                        ),
-                        height: 250,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Colors.grey.shade300),
-                        ),
-                        child: Center(
-                          child: captchaBytes.isEmpty ? CircularProgressIndicator() : Image.memory(captchaBytes),
-                        ),
-                      ),
-                      const SizedBox(height: defaultPadding),
-                      TextFormField(
-                        onSaved: (value) {
-                          captchaText = value!;
-                        },
-                        inputFormatters: [
-                          FilteringTextInputFormatter.deny(RegExp(r'\s')),
-                        ],
-                        decoration: InputDecoration(
-                          hintText: "Captcha",
-                          prefixIcon: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: defaultPadding * 0.75,
-                            ),
-
-                            child: SvgPicture.asset(
-                              iconLock,
-                              height: 24,
-                              width: 24,
-                              colorFilter: ColorFilter.mode(
-                                Theme.of(context).textTheme.bodyLarge!.color!
-                                    .withValues(alpha: 0.3),
-                                BlendMode.srcIn,
+                            const SizedBox(height: defaultPadding),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: defaultPadding * 0.75,
+                                horizontal: defaultPadding * 0.75,
+                              ),
+                              height: 250,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: Colors.grey.shade300),
+                              ),
+                              child: Center(
+                                child: captchaBytes.isEmpty
+                                    ? CircularProgressIndicator()
+                                    : Image.memory(captchaBytes),
                               ),
                             ),
-                          ),
-                          suffixIcon: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: defaultPadding * 0.75,
-                            ),
-                            child: InkWell(
-                              onTap: (){
-                                fetchCaptcha();
+                            const SizedBox(height: defaultPadding),
+                            TextFormField(
+                              onSaved: (value) {
+                                captchaText = value!;
                               },
-                              child: SvgPicture.asset(
-                                iconRefresh,
-                                height: 24,
-                                width: 24,
-                                colorFilter: ColorFilter.mode(
-                                  Theme.of(context).textTheme.bodyLarge!.color!
-                                      .withValues(alpha: 0.3),
-                                  BlendMode.srcIn,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                              ],
+                              decoration: InputDecoration(
+                                hintText: "Captcha",
+                                prefixIcon: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: defaultPadding * 0.75,
+                                  ),
+
+                                  child: SvgPicture.asset(
+                                    iconLock,
+                                    height: 24,
+                                    width: 24,
+                                    colorFilter: ColorFilter.mode(
+                                      Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!
+                                          .color!
+                                          .withValues(alpha: 0.3),
+                                      BlendMode.srcIn,
+                                    ),
+                                  ),
+                                ),
+                                suffixIcon: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: defaultPadding * 0.75,
+                                  ),
+                                  child: InkWell(
+                                    onTap: () {
+                                      fetchCaptcha();
+                                    },
+                                    child: SvgPicture.asset(
+                                      iconRefresh,
+                                      height: 24,
+                                      width: 24,
+                                      colorFilter: ColorFilter.mode(
+                                        Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge!
+                                            .color!
+                                            .withValues(alpha: 0.3),
+                                        BlendMode.srcIn,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ),
-                      ),
                           ],
                         ),
                       ),
@@ -245,9 +253,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       //     child: const Text("Forgot password"),
                       //   ),
                       // ),
-                      SizedBox(
-                        height: defaultPadding,
-                      ),
+                      SizedBox(height: defaultPadding),
                       ElevatedButton(
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
@@ -255,7 +261,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
                             context.loaderOverlay.show();
                             LogInAPI()
-                                .doLogIn(emilId, password, captchaId, captchaText)
+                                .doLogIn(
+                                  emilId,
+                                  password,
+                                  captchaId,
+                                  captchaText,
+                                )
                                 .then((value) => {checkSuccessValue(value)})
                                 .catchError((error) {
                                   checkErrorValue(error);
@@ -291,13 +302,28 @@ class _LoginScreenState extends State<LoginScreen> {
     context.loaderOverlay.hide();
     if (value.success) {
       setState(() {
-        token = value.data.token;
+        token = value.data!.token;
       });
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        dashboardScreenRoute,
-        ModalRoute.withName(dashboardScreenRoute),
-      );
+      if (token.isNotEmpty) {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          dashboardScreenRoute,
+          ModalRoute.withName(dashboardScreenRoute),
+        );
+      } else {
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.error,
+          text: "Log in Failed! Try again later.",
+          onConfirmBtnTap: () {
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              dashboardScreenRoute,
+              ModalRoute.withName(logInScreenRoute),
+            );
+          },
+        );
+      }
     } else {
       QuickAlert.show(
         context: context,

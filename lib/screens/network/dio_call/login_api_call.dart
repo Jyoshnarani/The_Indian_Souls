@@ -8,18 +8,19 @@ import 'package:the_indian_souls/screens/network/models/login_model.dart';
 class LogInAPI {
   DioClientCall dioClientCall = DioClientCall();
 
-  Future<LoginModel> doLogIn(String emailId, String password, int captchaId, String captchaText) async {
+  Future<LoginModel> doLogIn(
+    String emailId,
+    String password,
+    int captchaId,
+    String captchaText,
+  ) async {
     try {
-      LoginModel loginModel = LoginModel(
-        success: false,
-        message: "",
-        data: Data(token: ""),
-      );
+      LoginModel loginModel = LoginModel(success: false, message: "");
       final data = json.encode({
         "email_address": emailId,
         "login_password": password,
-        "captcha_id" : captchaId,
-        "captcha_text" : captchaText
+        "captcha_id": captchaId,
+        "captcha_text": captchaText,
       });
       debugPrint("api : ${ApiDeclaration.loginUrl},\n data : $data ");
       await dioClientCall
@@ -28,11 +29,7 @@ class LogInAPI {
             loginModel = LoginModel.fromJson(value);
           })
           .catchError((error) {
-            loginModel = LoginModel(
-              success: false,
-              message: error.toString(),
-              data: Data(token: ""),
-            );
+            loginModel = LoginModel(success: false, message: error.toString());
           });
       return loginModel;
     } catch (e) {
