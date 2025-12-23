@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:the_indian_souls/screens/network/dio_call/dio_error_util.dart';
 
 class DioClientCall {
   Dio dio = Dio();
@@ -21,19 +22,19 @@ class DioClientCall {
         onReceiveProgress: onReceiveProgress,
       );
       if (response.statusCode != null) {
-        if (response.statusCode == 200) {
+        if (response.statusCode == 200 || response.statusCode == 201) {
           return response.data;
         }
         if (response.statusCode == 400) {
-          return response.statusMessage;
+          return "Unexpected error occurred : ${response.statusCode}";
         }
         if (response.statusCode! >= 400 && response.statusCode! < 500) {
-          return response.statusMessage;
+          return "Unexpected error occurred : ${response.statusCode}";
         } else {
-          return response.statusMessage;
+          return "Unexpected error occurred : ${response.statusCode}";
         }
       } else {
-        return response.statusMessage;
+        return "Unexpected error occurred : ${response.statusCode}";
       }
     } catch (e) {
       debugPrint(e.toString());
@@ -62,19 +63,19 @@ class DioClientCall {
         onReceiveProgress: onReceiveProgress,
       );
       if (response.statusCode != null) {
-        if (response.statusCode == 200) {
+        if (response.statusCode == 200  || response.statusCode == 201) {
           return response.data;
         }
         if (response.statusCode == 400) {
-          return response.statusMessage;
+          return "Unexpected error occurred : ${response.statusCode}";
         }
         if (response.statusCode! >= 400 && response.statusCode! < 500) {
-          return response.statusMessage;
+          return "Unexpected error occurred : ${response.statusCode}";
         } else {
-          return response.statusMessage;
+          return "Unexpected error occurred : ${response.statusCode}";
         }
       } else {
-        return response.statusMessage;
+        return "Unexpected error occurred : ${response.statusCode}";
       }
     } catch (e) {
       rethrow;
@@ -124,19 +125,19 @@ class DioClientCall {
         onReceiveProgress: onReceiveProgress,
       );
       if (response.statusCode != null) {
-        if (response.statusCode == 200) {
+        if (response.statusCode == 200 || response.statusCode == 201) {
           return response.data;
         }
         if (response.statusCode == 400) {
-          return response.statusMessage;
+          return "Unexpected error occurred : ${response.statusCode}";
         }
         if (response.statusCode! >= 400 && response.statusCode! < 500) {
-          return response.statusMessage;
+          return "Unexpected error occurred : ${response.statusCode}";
         } else {
-          return response.statusMessage;
+          return "Unexpected error occurred : ${response.statusCode}";
         }
       } else {
-        return response.statusMessage;
+        return "Unexpected error occurred : ${response.statusCode}";
       }
     } catch (e) {
       rethrow;

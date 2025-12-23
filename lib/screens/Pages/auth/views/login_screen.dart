@@ -291,7 +291,7 @@ class _LoginScreenState extends State<LoginScreen> {
     context.loaderOverlay.hide();
     if (value.success) {
       setState(() {
-        ApiDeclaration.token = value.data.token;
+        token = value.data.token;
       });
       Navigator.pushNamedAndRemoveUntil(
         context,

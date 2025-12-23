@@ -29,11 +29,12 @@ class ProductDetailsData {
   dynamic productTypeCode;
   dynamic returnMerchandiseAuthorizationNr;
   String productName;
-  String productPrice;
-  String productColor;
-  String productSize;
+  dynamic productPrice;
+  dynamic productColor;
+  dynamic productSize;
   String productDescription;
   dynamic otherProductDetails;
+  String productUrl;
 
   ProductDetailsData({
     required this.productId,
@@ -45,6 +46,7 @@ class ProductDetailsData {
     required this.productSize,
     required this.productDescription,
     required this.otherProductDetails,
+    required this.productUrl,
   });
 
   factory ProductDetailsData.fromJson(Map<String, dynamic> json) => ProductDetailsData(
@@ -57,6 +59,7 @@ class ProductDetailsData {
     productSize: json["product_size"],
     productDescription: json["product_description"],
     otherProductDetails: json["other_product_details"],
+    productUrl: json["product_url"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -69,5 +72,6 @@ class ProductDetailsData {
     "product_size": productSize,
     "product_description": productDescription,
     "other_product_details": otherProductDetails,
+    "product_url": productUrl,
   };
 }

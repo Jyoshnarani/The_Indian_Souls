@@ -7,7 +7,8 @@ import 'package:the_indian_souls/utils/constants/constants.dart';
 import 'package:the_indian_souls/utils/constants/icon_constants.dart';
 
 class Dashboard extends StatefulWidget {
-  const Dashboard({super.key});
+  final int initialIndex;
+  const Dashboard({super.key, this.initialIndex = 0});
 
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -18,10 +19,11 @@ class _DashboardState extends State<Dashboard> {
     HomeScreen(),
     ProfileScreen(),
   ];
-  int _currentIndex = 0;
+  late int _currentIndex;
   @override
   void initState() {
     super.initState();
+    _currentIndex = widget.initialIndex;
   }
 
   @override

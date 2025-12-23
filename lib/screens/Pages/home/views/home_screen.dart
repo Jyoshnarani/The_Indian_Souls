@@ -11,7 +11,7 @@ class HomeScreen extends StatelessWidget {
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
-            const SliverToBoxAdapter(child: OffersCarousel()),
+            // const SliverToBoxAdapter(child: OffersCarousel()),
             const SliverToBoxAdapter(child: PopularProducts()),
           ],
         ),

@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
           darkTheme: AppTheme.darkTheme,
           themeMode: mode,
           onGenerateRoute: generateRoute,
-          initialRoute: ApiDeclaration.token.isNotEmpty? dashboardScreenRoute: onboardingScreenRoute,
+          initialRoute: token.isNotEmpty? dashboardScreenRoute: onboardingScreenRoute,
         );
       },
     );

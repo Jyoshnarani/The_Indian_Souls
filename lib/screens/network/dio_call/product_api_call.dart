@@ -7,23 +7,17 @@ import 'package:the_indian_souls/screens/network/models/product_model.dart';
 class ProductListAPI {
   DioClientCall dioClientCall = DioClientCall();
 
-  Future<ProductListModel> getAllProductList() async {
+  Future<AllProductModel> getAllProductList() async {
     try {
-      ProductListModel productListModel = ProductListModel(
-        success: false,
-        productData: [],
-      );
+      AllProductModel productListModel = AllProductModel(success: false);
       debugPrint("api : ${ApiDeclaration.productsUrl}");
       await dioClientCall
           .get(ApiDeclaration.productsUrl)
           .then((value) {
-            productListModel = ProductListModel.fromJson(value);
+            productListModel = AllProductModel.fromJson(value);
           })
           .catchError((error) {
-            productListModel = ProductListModel(
-              success: false,
-              productData: [],
-            );
+            productListModel = AllProductModel(success: false);
           });
       return productListModel;
     } catch (e) {

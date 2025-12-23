@@ -5,13 +5,13 @@ class ProductInfo extends StatelessWidget {
   const ProductInfo({
     super.key,
     required this.title,
-    required this.price,
-    required this.color,
-    required this.size,
+    // required this.price,
+    // required this.color,
+    // required this.size,
     required this.desc,
   });
 
-  final String title, price, color, size,desc;
+  final String title,desc;// price, color, size,
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +21,11 @@ class ProductInfo extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Size: $size",
-              style: const TextStyle(fontWeight: FontWeight.w500),
-            ),
-            const SizedBox(height: defaultPadding / 2),
+            // Text(
+            //   "Size: $size",
+            //   style: const TextStyle(fontWeight: FontWeight.w500),
+            // ),
+            // const SizedBox(height: defaultPadding / 2),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -34,13 +34,13 @@ class ProductInfo extends StatelessWidget {
                   maxLines: 2,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
-                const SizedBox(height: defaultPadding),
-                Text(
-                  "\$$price",
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
-                ),
+                // const SizedBox(height: defaultPadding),
+                // Text(
+                //   "\$$price",
+                //   style: Theme.of(
+                //     context,
+                //   ).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
+                // ),
               ],
             ),
             const SizedBox(height: defaultPadding / 2),
@@ -52,8 +52,8 @@ class ProductInfo extends StatelessWidget {
             ),
             const SizedBox(height: defaultPadding / 2),
             SizedBox(height: 10,),
-            Text("Color: $color", style: const TextStyle(height: 1.4)),
-            const SizedBox(height: defaultPadding / 2),
+            // Text("Color: $color", style: const TextStyle(height: 1.4)),
+            // const SizedBox(height: defaultPadding / 2),
           ],
         ),
       ),

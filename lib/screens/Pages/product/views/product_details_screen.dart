@@ -61,12 +61,9 @@ class ProductDetailsScreenState extends State<ProductDetailsScreen> {
         body: SafeArea(
           child: productDetails.isEmpty ? const Center(child: CircularProgressIndicator()): CustomScrollView(
             slivers: [
-              const ProductImages(images: [productImg1]),
+              ProductImages(images: [productDetails.first.productUrl]),
               ProductInfo(
-                size: productDetails.first.productSize,
                 title: productDetails.first.productName,
-                price: productDetails.first.productPrice,
-                color: productDetails.first.productColor,
                 desc: productDetails.first.productDescription,
               ),
             ],

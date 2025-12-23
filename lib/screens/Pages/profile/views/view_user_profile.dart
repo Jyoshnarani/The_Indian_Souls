@@ -34,7 +34,7 @@ class ViewUserProfileScreenState extends State<ViewUserProfileScreen> {
         title: const Text('Profile'),
         actions: [
           InkWell(
-            onTap: null/*() async {
+            onTap: () async {
               final result = await Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -46,12 +46,14 @@ class ViewUserProfileScreenState extends State<ViewUserProfileScreen> {
               if (result == true) {
                 _refreshUserData();
               }
-            }*/,
-            child: SvgPicture.asset(
-              iconUserEdit,
-              height: 24,
-              width: 24,
-
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(defaultPadding),
+              child: SvgPicture.asset(
+                iconUserEdit,
+                height: 24,
+                width: 24,
+              ),
             ),
           ),
         ],

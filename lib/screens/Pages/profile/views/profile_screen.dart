@@ -156,7 +156,9 @@ class ProfileScreenState extends State<ProfileScreen> {
                     LogOutAPI().doLogOut().then((value) {
                       context.loaderOverlay.hide();
                       if (value.success) {
-                        ApiDeclaration.token = "";
+                        setState(() {
+                          token = "";
+                        });
                         Navigator.pushNamedAndRemoveUntil(
                           context,
                           logInScreenRoute,

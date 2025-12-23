@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:quickalert/quickalert.dart';
+import 'package:the_indian_souls/screens/Pages/dashboard.dart';
 import 'package:the_indian_souls/screens/network/dio_call/user_details_api_call.dart';
 import 'package:the_indian_souls/utils/constants/constants.dart';
 
@@ -25,8 +26,8 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
   late TextEditingController _addressLine1Controller;
   late TextEditingController _addressLine2Controller;
 
-  String? _selectedCity = 'Bangalore';
-  String? _selectedCountry = 'India';
+  String? _selectedCity;
+  String? _selectedCountry;
 
   final List<String> _countries = ['India', 'USA'];
   final Map<String, List<String>> _cities = {
@@ -52,8 +53,17 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
     _phoneNumberController = TextEditingController(text: widget.userData?.phoneNumber ?? '');
     _addressLine1Controller = TextEditingController(text: widget.userData?.addressLine1 ?? '');
     _addressLine2Controller = TextEditingController(text: widget.userData?.addressLine2 ?? '');
-    _selectedCountry = widget.userData?.country ?? _countries.first;
-    _selectedCity = widget.userData?.townCity?? _cities.keys.first;
+
+    _selectedCountry = widget.userData?.country;
+    if (!_countries.contains(_selectedCountry)) {
+      _selectedCountry = _countries.first;
+    }
+
+    final citiesForCountry = _cities[_selectedCountry] ?? [];
+    _selectedCity = widget.userData?.townCity;
+    if (!citiesForCountry.contains(_selectedCity)) {
+      _selectedCity = citiesForCountry.isNotEmpty ? citiesForCountry.first : null;
+    }
   }
 
   @override
@@ -74,17 +84,6 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Profile'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.save),
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                _formKey.currentState!.save();
-                _updateUserProfile();
-              }
-            },
-          ),
-        ],
       ),
       body: LoaderOverlay(
         child: SingleChildScrollView(
@@ -104,6 +103,16 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
                 _buildTextFormField(_addressLine2Controller, 'Address Line 2', false),
                 _buildCountryDropdown(),
                 _buildCityDropdown(),
+                const SizedBox(height: defaultPadding),
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                      _updateUserProfile();
+                    }
+                  },
+                  child: const Text('Update'),
+                )
               ],
             ),
           ),
@@ -183,7 +192,7 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
       'middle_initial': _middleInitialController.text,
       'address_line_1': _addressLine1Controller.text,
       'address_line_2': _addressLine2Controller.text,
-      'town_city': _selectedCity,
+      'city': _selectedCity,
       'country': _selectedCountry,
     };
 
@@ -191,7 +200,18 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
     context.loaderOverlay.hide();
 
     if (success) {
-      Navigator.pop(context, true); // Pass true to indicate success
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.success,
+        text: 'Profile updated successfully!',
+        onConfirmBtnTap: () {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const Dashboard(initialIndex: 1)),
+            (Route<dynamic> route) => false,
+          );
+        },
+      );
     } else {
       QuickAlert.show(
         context: context,

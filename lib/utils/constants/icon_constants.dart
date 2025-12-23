@@ -26,6 +26,7 @@ const iconLoading = "assets/icons/Loading.svg";
 const iconLocation = "assets/icons/Location.svg";
 const iconLock = "assets/icons/Lock.svg";
 const iconUserEdit = "assets/icons/UserEdit.svg";
+const iconUserSave = "assets/icons/UserSave.svg";
 const iconLogout = "assets/icons/Logout.svg";
 const iconMessage = "assets/icons/Message.svg";
 const iconMiniRight = "assets/icons/MiniRight.svg";
