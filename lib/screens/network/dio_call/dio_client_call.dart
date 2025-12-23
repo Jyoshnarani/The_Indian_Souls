@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:the_indian_souls/screens/network/dio_call/dio_error_util.dart';
 
 class DioClientCall {
   Dio dio = Dio();
@@ -22,21 +21,37 @@ class DioClientCall {
         onReceiveProgress: onReceiveProgress,
       );
       if (response.statusCode != null) {
-        if (response.statusCode == 200 || response.statusCode == 201) {
+        if (response.statusCode! >= 200 && response.statusCode! <= 299) {
           return response.data;
-        }
-        if (response.statusCode == 400) {
-          return "Unexpected error occurred : ${response.statusCode}";
-        }
-        if (response.statusCode! >= 400 && response.statusCode! < 500) {
-          return "Unexpected error occurred : ${response.statusCode}";
+        } else if (response.statusCode! == 400) {
+          return response.data;
+        } else if (response.statusCode! > 400 && response.statusCode! <= 499) {
+          return "Client Error: ${response.statusCode} : ${response.statusMessage}";
+        } else if (response.statusCode! >= 500 && response.statusCode! < 599) {
+          return "Server Error: : ${response.statusCode} : ${response.statusMessage}";
         } else {
-          return "Unexpected error occurred : ${response.statusCode}";
+          return "The request is being processed (Status code ${response.statusCode})";
         }
       } else {
         return "Unexpected error occurred : ${response.statusCode}";
       }
-    } catch (e) {
+    } on DioException catch (e) {
+      if (e.response != null) {
+        final response = e.response!;
+        if (response.statusCode != null) {
+          if (response.statusCode! == 400) {
+            return response.data;
+          } else if (response.statusCode! > 400 &&
+              response.statusCode! <= 499) {
+            return "Client Error: ${response.statusCode} : ${response.statusMessage}";
+          } else if (response.statusCode! >= 500 &&
+              response.statusCode! < 599) {
+            return "Server Error: : ${response.statusCode} : ${response.statusMessage}";
+          } else {
+            return "The request is being processed (Status code ${response.statusCode})";
+          }
+        }
+      }
       debugPrint(e.toString());
       rethrow;
     }
@@ -63,21 +78,38 @@ class DioClientCall {
         onReceiveProgress: onReceiveProgress,
       );
       if (response.statusCode != null) {
-        if (response.statusCode == 200  || response.statusCode == 201) {
+        if (response.statusCode! >= 200 && response.statusCode! <= 299) {
           return response.data;
-        }
-        if (response.statusCode == 400) {
-          return "Unexpected error occurred : ${response.statusCode}";
-        }
-        if (response.statusCode! >= 400 && response.statusCode! < 500) {
-          return "Unexpected error occurred : ${response.statusCode}";
+        } else if (response.statusCode! == 400) {
+          return response.data;
+        } else if (response.statusCode! > 400 && response.statusCode! <= 499) {
+          return "Client Error: ${response.statusCode} : ${response.statusMessage}";
+        } else if (response.statusCode! >= 500 && response.statusCode! < 599) {
+          return "Server Error: : ${response.statusCode} : ${response.statusMessage}";
         } else {
-          return "Unexpected error occurred : ${response.statusCode}";
+          return "The request is being processed (Status code ${response.statusCode})";
         }
       } else {
         return "Unexpected error occurred : ${response.statusCode}";
       }
-    } catch (e) {
+    } on DioException catch (e) {
+      if (e.response != null) {
+        final response = e.response!;
+        if (response.statusCode != null) {
+          if (response.statusCode! == 400) {
+            return response.data;
+          } else if (response.statusCode! > 400 &&
+              response.statusCode! <= 499) {
+            return "Client Error: ${response.statusCode} : ${response.statusMessage}";
+          } else if (response.statusCode! >= 500 &&
+              response.statusCode! < 599) {
+            return "Server Error: : ${response.statusCode} : ${response.statusMessage}";
+          } else {
+            return "The request is being processed (Status code ${response.statusCode})";
+          }
+        }
+      }
+      debugPrint(e.toString());
       rethrow;
     }
   }
@@ -125,21 +157,38 @@ class DioClientCall {
         onReceiveProgress: onReceiveProgress,
       );
       if (response.statusCode != null) {
-        if (response.statusCode == 200 || response.statusCode == 201) {
+        if (response.statusCode! >= 200 && response.statusCode! <= 299) {
           return response.data;
-        }
-        if (response.statusCode == 400) {
-          return "Unexpected error occurred : ${response.statusCode}";
-        }
-        if (response.statusCode! >= 400 && response.statusCode! < 500) {
-          return "Unexpected error occurred : ${response.statusCode}";
+        } else if (response.statusCode! == 400) {
+          return response.data;
+        } else if (response.statusCode! > 400 && response.statusCode! <= 499) {
+          return "Client Error: ${response.statusCode} : ${response.statusMessage}";
+        } else if (response.statusCode! >= 500 && response.statusCode! < 599) {
+          return "Server Error: : ${response.statusCode} : ${response.statusMessage}";
         } else {
-          return "Unexpected error occurred : ${response.statusCode}";
+          return "The request is being processed (Status code ${response.statusCode})";
         }
       } else {
         return "Unexpected error occurred : ${response.statusCode}";
       }
-    } catch (e) {
+    } on DioException catch (e) {
+      if (e.response != null) {
+        final response = e.response!;
+        if (response.statusCode != null) {
+          if (response.statusCode! == 400) {
+            return response.data;
+          } else if (response.statusCode! > 400 &&
+              response.statusCode! <= 499) {
+            return "Client Error: ${response.statusCode} : ${response.statusMessage}";
+          } else if (response.statusCode! >= 500 &&
+              response.statusCode! < 599) {
+            return "Server Error: : ${response.statusCode} : ${response.statusMessage}";
+          } else {
+            return "The request is being processed (Status code ${response.statusCode})";
+          }
+        }
+      }
+      debugPrint(e.toString());
       rethrow;
     }
   }
@@ -163,21 +212,38 @@ class DioClientCall {
         cancelToken: cancelToken,
       );
       if (response.statusCode != null) {
-        if (response.statusCode == 200) {
+        if (response.statusCode! >= 200 && response.statusCode! <= 299) {
           return response.data;
-        }
-        if (response.statusCode == 400) {
-          return response.statusMessage;
-        }
-        if (response.statusCode! >= 400 && response.statusCode! < 500) {
-          return response.statusMessage;
+        } else if (response.statusCode! == 400) {
+          return response.data;
+        } else if (response.statusCode! > 400 && response.statusCode! <= 499) {
+          return "Client Error: ${response.statusCode} : ${response.statusMessage}";
+        } else if (response.statusCode! >= 500 && response.statusCode! < 599) {
+          return "Server Error: : ${response.statusCode} : ${response.statusMessage}";
         } else {
-          return response.statusMessage;
+          return "The request is being processed (Status code ${response.statusCode})";
         }
       } else {
-        return response.statusMessage;
+        return "Unexpected error occurred : ${response.statusCode}";
       }
-    } catch (e) {
+    } on DioException catch (e) {
+      if (e.response != null) {
+        final response = e.response!;
+        if (response.statusCode != null) {
+          if (response.statusCode! == 400) {
+            return response.data;
+          } else if (response.statusCode! > 400 &&
+              response.statusCode! <= 499) {
+            return "Client Error: ${response.statusCode} : ${response.statusMessage}";
+          } else if (response.statusCode! >= 500 &&
+              response.statusCode! < 599) {
+            return "Server Error: : ${response.statusCode} : ${response.statusMessage}";
+          } else {
+            return "The request is being processed (Status code ${response.statusCode})";
+          }
+        }
+      }
+      debugPrint(e.toString());
       rethrow;
     }
   }

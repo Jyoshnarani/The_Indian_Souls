@@ -693,11 +693,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
         type: QuickAlertType.success,
         text: value.message,
         onConfirmBtnTap: () {
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            dashboardScreenRoute,
-            ModalRoute.withName(logInScreenRoute),
-          );
+          if(value.success){
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              dashboardScreenRoute,
+              ModalRoute.withName(logInScreenRoute),
+            );
+          }else{
+            Navigator.pop(context);
+          }
         },
       );
     } else {

@@ -192,7 +192,7 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
       'middle_initial': _middleInitialController.text,
       'address_line_1': _addressLine1Controller.text,
       'address_line_2': _addressLine2Controller.text,
-      'city': _selectedCity,
+      'town_city': _selectedCity,
       'country': _selectedCountry,
     };
 
