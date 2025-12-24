@@ -65,6 +65,7 @@ class ProductDetailsScreenState extends State<ProductDetailsScreen> {
               ProductInfo(
                 title: productDetails.first.productName,
                 desc: productDetails.first.productDescription,
+                price: productDetails.first.productPrice,
               ),
             ],
           ),

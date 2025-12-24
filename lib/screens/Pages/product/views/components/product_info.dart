@@ -5,13 +5,13 @@ class ProductInfo extends StatelessWidget {
   const ProductInfo({
     super.key,
     required this.title,
-    // required this.price,
+    required this.price,
     // required this.color,
     // required this.size,
     required this.desc,
   });
 
-  final String title,desc;// price, color, size,
+  final String title,desc,price;// price, color, size,
 
   @override
   Widget build(BuildContext context) {
@@ -34,14 +34,15 @@ class ProductInfo extends StatelessWidget {
                   maxLines: 2,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
-                // const SizedBox(height: defaultPadding),
-                // Text(
-                //   "\$$price",
-                //   style: Theme.of(
-                //     context,
-                //   ).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
-                // ),
+                const SizedBox(height: defaultPadding),
+
               ],
+            ),
+            Text(
+              "INR $price",
+              style: Theme.of(
+                context,
+              ).textTheme.titleSmall!.copyWith(fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: defaultPadding / 2),
             SizedBox(height: 10,),

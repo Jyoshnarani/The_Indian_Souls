@@ -80,7 +80,7 @@ class PopularProductsState extends State<PopularProducts> {
             padding: const EdgeInsets.all(defaultPadding),
             child: Text(
               "Products",
-              style: Theme.of(context).textTheme.titleSmall,
+              style: Theme.of(context).textTheme.titleMedium,
             ),
           ),
           Padding(
