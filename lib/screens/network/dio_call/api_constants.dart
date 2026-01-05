@@ -1,4 +1,5 @@
-String token = "";
+// String token = "";
+String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcl9pZCI6MTIsImlhdCI6MTc2NzYyMDM3NiwiZXhwIjoxNzY3NzA2Nzc2fQ.89ICLWJdSVHpfMrX35aHv4WMuyCznJ4_xgGhCK3y7kE";
 class ApiDeclaration {
   static const baseUrl = "https://indian-souls-backend-d5g7geakhbazgzhj.southeastasia-01.azurewebsites.net";
 

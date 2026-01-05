@@ -282,7 +282,7 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
-              builder: (context) => const Dashboard(initialIndex: 1),
+              builder: (context) => const Dashboard(),//initialIndex: 1
             ),
             (Route<dynamic> route) => false,
           );

@@ -81,8 +81,8 @@ class ProfileScreenState extends State<ProfileScreen> {
                   MaterialPageRoute(
                     builder: (context) {
                       return ViewUserProfileScreen(
-                        userData: userData,
-                      );
+
+                      ); // userData: userData,
                     },
                   ),
                 );

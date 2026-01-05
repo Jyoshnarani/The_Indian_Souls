@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:the_indian_souls/screens/Pages/profile/views/edit_user_profile.dart';
 import 'package:the_indian_souls/screens/components/network_image_with_loader.dart';
 import 'package:the_indian_souls/screens/network/dio_call/user_details_api_call.dart';
@@ -10,21 +11,55 @@ import 'package:the_indian_souls/utils/constants/icon_constants.dart';
 import 'package:the_indian_souls/utils/constants/image_constants.dart';
 
 class ViewUserProfileScreen extends StatefulWidget {
-  final dynamic userData;
+  // final dynamic userData;
 
-  const ViewUserProfileScreen({super.key, required this.userData});
+  const ViewUserProfileScreen({super.key,});// required this.userData
 
   @override
   State<ViewUserProfileScreen> createState() => ViewUserProfileScreenState();
 }
 
 class ViewUserProfileScreenState extends State<ViewUserProfileScreen> {
-  late UserData userData;
+  // late UserData userData;
+  UserData? userData;
 
   @override
   void initState() {
     super.initState();
-    userData = widget.userData;
+    WidgetsBinding.instance.addPostFrameCallback((_) => fetchUserDetails());
+    // userData = widget.userData;
+  }
+
+  Future<void> fetchUserDetails() async {
+    context.loaderOverlay.show();
+    try {
+      final response = await UserDetailsAPI().getUserDetails();
+      if (mounted) {
+        if (response.success && response.data != null) {
+          setState(() {
+            userData = response.data;
+          });
+        } else {
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.error,
+            text: 'Failed to fetch user details',
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.error,
+          text: e.toString(),
+        );
+      }
+    } finally {
+      if (mounted) {
+        context.loaderOverlay.hide();
+      }
+    }
   }
 
   @override
@@ -33,6 +68,7 @@ class ViewUserProfileScreenState extends State<ViewUserProfileScreen> {
       appBar: AppBar(
         title: const Text('Profile'),
         actions: [
+          if (userData != null)
           InkWell(
             onTap: () async {
               final result = await Navigator.push(
@@ -59,7 +95,9 @@ class ViewUserProfileScreenState extends State<ViewUserProfileScreen> {
         ],
       ),
       body: LoaderOverlay(
-        child: SingleChildScrollView(
+        child:  userData == null
+            ? const Center(child: CircularProgressIndicator())
+            :SingleChildScrollView(
           padding: const EdgeInsets.all(defaultPadding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,20 +112,20 @@ class ViewUserProfileScreenState extends State<ViewUserProfileScreen> {
               const SizedBox(height: defaultPadding),
               _buildProfileDetail(
                 'Name',
-                '${userData.firstName ?? 'N/A'} ${userData.middleInitial ?? ''} ${userData.lastName ?? ''}',
+                '${userData!.firstName ?? 'N/A'} ${userData!.middleInitial ?? ''} ${userData!.lastName ?? ''}',
               ),
-              _buildProfileDetail('Gender', userData.gender??'N/A'),
-              _buildProfileDetail('Email Address', userData.emailAddress),
+              _buildProfileDetail('Gender', userData!.gender??'N/A'),
+              _buildProfileDetail('Email Address', userData!.emailAddress),
               _buildProfileDetail(
                 'Phone Number',
-                userData.phoneNumber ?? 'N/A',
+                userData!.phoneNumber ?? 'N/A',
               ),
               _buildProfileDetail(
                 'Address',
-                '${userData.addressLine1 ?? 'N/A'} ${userData.addressLine2 ?? 'N/A'} ${userData.addressLine3 ?? ''} ${userData.addressLine4 ?? ''}',
+                '${userData!.addressLine1 ?? 'N/A'} ${userData!.addressLine2 ?? 'N/A'} ${userData!.addressLine3 ?? ''} ${userData!.addressLine4 ?? ''}',
               ),
-              _buildProfileDetail('City', userData.townCity ?? 'N/A'),
-              _buildProfileDetail('Country', userData.country ?? 'N/A'),
+              _buildProfileDetail('City', userData!.townCity ?? 'N/A'),
+              _buildProfileDetail('Country', userData!.country ?? 'N/A'),
             ],
           ),
         ),

@@ -83,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Expanded(
               flex: 1,
               child: Image.network(
-                width: MediaQuery.of(context).size.width,
+                width: size.width,
                 loginImage,
                 fit: BoxFit.fill,
               ),
